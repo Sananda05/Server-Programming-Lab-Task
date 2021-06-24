@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const isLoggedIn = require("../middleWare/authMiddleWare");
 const { getRegister, postRegister, getLogin, postLogin} = require("../Controller/authcontroller");
 const {getHome , getLanding} = require("../Controller/generalController");
+const errorController = require("../Controller/errorController");
 
 router.use("/home", isLoggedIn);
 router.use(bodyParser.json());
@@ -21,8 +22,6 @@ router.route("/login").get(getLogin).post(postLogin);
 
 router.get("/home", getHome);
 
-router.use((req, res) => {
-  res.status(401).send("404! Page doesn't exist");
-});
+router.use(errorController.invalidPage);
 
 module.exports = router;
