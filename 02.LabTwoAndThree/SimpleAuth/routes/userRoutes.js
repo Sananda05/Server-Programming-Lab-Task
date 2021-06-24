@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const alert = require("alert");
+const jwt = require("jsonwebtoken");
 var LocalStorage = require("node-localstorage").LocalStorage,
 localStorage = new LocalStorage("./scratch");
 
@@ -73,6 +74,14 @@ router.post("/login", async (req, res) => {
     if (user) {
       if (bcrypt.compareSync(password, user.pass)) {
 
+        const token = jwt.sign(
+            {
+              id: user._id,
+              username: user.username,
+            },
+            JWT_SECRET
+          );
+        localStorage.setItem("token",token)
         localStorage.setItem("user", user.username);
         res.cookie("user", user.username);
         alert("Login Successful !");
