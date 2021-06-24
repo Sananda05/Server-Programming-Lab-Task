@@ -3,7 +3,8 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 
 const isLoggedIn = require("../middleWare/authMiddleWare");
-const { getRegister, postRegister, getLogin, postLogin, getHome} = require("../Controller/authcontroller");
+const { getRegister, postRegister, getLogin, postLogin} = require("../Controller/authcontroller");
+const {getHome , getLanding} = require("../Controller/generalController");
 
 router.use("/home", isLoggedIn);
 router.use(bodyParser.json());
@@ -13,9 +14,7 @@ router.use("/home", isLoggedIn);
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.get("/", (req, res) => {
-  res.send("Landing");
-});
+router.get("/", getLanding);
 router.route("/register").get(getRegister).post(postRegister);
 
 router.route("/login").get(getLogin).post(postLogin);

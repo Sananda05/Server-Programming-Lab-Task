@@ -86,8 +86,5 @@ const postLogin = async (req, res) => {
   }
 };
 
-const getHome =  (req, res) => {
-    res.send("Home")
-};
 
-module.exports = { getRegister, postRegister, getLogin, postLogin, getHome};
+module.exports = { getRegister, postRegister, getLogin, postLogin};
