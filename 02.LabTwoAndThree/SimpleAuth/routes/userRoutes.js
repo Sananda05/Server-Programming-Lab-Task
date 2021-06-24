@@ -3,6 +3,8 @@ const router = express.Router();
 const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const alert = require("alert");
+var LocalStorage = require("node-localstorage").LocalStorage,
+localStorage = new LocalStorage("./scratch");
 
 const User = require("../model/usersModel/user");
 
@@ -63,8 +65,26 @@ router.get("/login", (req, res) => {
   res.sendFile("login.html", { root: "./views/authView" });
 });
 
-router.post("/login", (req, res) => {
-  res.send("Login done");
+router.post("/login", async (req, res) => {
+    const { username, email, password } = req.body;
+
+    const user = await User.findOne({ email });
+  
+    if (user) {
+      if (bcrypt.compareSync(password, user.pass)) {
+
+        localStorage.setItem("user", user.username);
+        res.cookie("user", user.username);
+        alert("Login Successful !");
+        res.redirect("/home");
+      } else {
+        alert("Wrong Password");
+        res.redirect("/login");
+      }
+    } else {
+      alert("User not registered");
+      res.redirect("/register");
+    }
 });
 
 router.get("/home",  (req, res) => {
