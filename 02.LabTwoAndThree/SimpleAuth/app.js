@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 
-
 const userRouter = require("./routes/userRoutes");
+
+app.use(express.static("public"));
 
 mongoose
   .connect(process.env.Mongo_URL, {
@@ -20,4 +21,4 @@ mongoose
 
 app.use(userRouter);
 
-module.exports=app;
+module.exports = app;
