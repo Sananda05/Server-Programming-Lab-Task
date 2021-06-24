@@ -8,9 +8,14 @@ var LocalStorage = require("node-localstorage").LocalStorage,
 localStorage = new LocalStorage("./scratch");
 
 const User = require("../model/usersModel/user");
+const isLoggedIn = require("../middleWare/authMiddleWare");
 
+router.use("/home",isLoggedIn);
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
+
+JWT_SECRET = "aghddshjhdhebgdshdjkhxsnakjdsjsjdd674773$%$#sshsshhsdhssj";
+
 
 
 router.get("/", (req,res) =>{
