@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
+
 const bodyParser = require("body-parser");
 
 const isLoggedIn = require("../middleWare/authMiddleWare");
-const { getRegister, postRegister, getLogin, postLogin} = require("../Controller/authcontroller");
+const { getRegister, postRegister, getLogin, postLogin,logOut} = require("../Controller/authcontroller");
 const {getHome , getLanding} = require("../Controller/generalController");
 const errorController = require("../Controller/errorController");
 
-router.use("/home", isLoggedIn);
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
@@ -20,7 +20,9 @@ router.route("/register").get(getRegister).post(postRegister);
 
 router.route("/login").get(getLogin).post(postLogin);
 
-router.get("/home", getHome);
+router.get("/home", isLoggedIn, getHome);
+
+router.post('/home',logOut);
 
 router.use(errorController.invalidPage);
 
