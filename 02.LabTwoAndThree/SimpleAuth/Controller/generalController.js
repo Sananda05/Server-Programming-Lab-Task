@@ -2,11 +2,11 @@ var LocalStorage = require("node-localstorage").LocalStorage,
 localStorage = new LocalStorage("./scratch");
 
 const getLanding = (req, res) => {
-  res.send("Landing");
+  res.sendfile("landing.html" , {root : "./views"});
 };
 
 const getHome =  (req, res) => {
-    res.sendfile("home.html", { root: "./views/homeView" })
+    res.sendfile("starter.html", { root: "./views" })
 };
 
 

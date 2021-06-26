@@ -10,7 +10,7 @@ const User = require("../model/usersModel/user");
 JWT_SECRET = "aghddshjhdhebgdshdjkhxsnakjdsjsjdd674773$%$#sshsshhsdhssj";
 
 const getRegister = (req, res) => {
-  res.sendFile("register.html", { root: "./views/authView" });
+  res.sendFile("register.html", { root: "./views" });
 };
 
 const postRegister = async (req, res) => {
@@ -18,11 +18,11 @@ const postRegister = async (req, res) => {
 
   if (!username || typeof username !== "string") {
     alert("Inavlid Username");
-    res.redirect("/");
+    res.redirect("/register");
   }
   if (!email || typeof email !== "string") {
     alert("Inavlid email");
-    res.redirect("/");
+    res.redirect("/register");
   }
 
   if (password.length >= 6) {
@@ -46,16 +46,16 @@ const postRegister = async (req, res) => {
       }
     } else {
       alert("Password doesn't match !");
-      res.redirect("/");
+      res.redirect("/register");
     }
   } else {
     alert("Password must be at least 6 digits");
-    res.redirect("/");
+    res.redirect("/register");
   }
 };
 
 const getLogin = (req, res) => {
-  res.sendFile("login.html", { root: "./views/authView" });
+  res.sendFile("login.html", { root: "./views" });
 };
 
 const postLogin = async (req, res) => {
@@ -86,5 +86,11 @@ const postLogin = async (req, res) => {
   }
 };
 
+const logOut = (req,res) => {
+  localStorage.removeItem("user");
+  res.clearCookie("user");
+  res.redirect("/")
+}
 
-module.exports = { getRegister, postRegister, getLogin, postLogin};
+
+module.exports = { getRegister, postRegister, getLogin, postLogin,logOut};

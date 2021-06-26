@@ -15,7 +15,7 @@ const isLoggedIn = (req, res, next) => {
   if (current_user) {
     res.clearCookie("user");
     res.cookie("user", current_user);
-    res.send(`Welcome ${current_user} !`);
+    //res.send(`Welcome ${current_user} !`);
     next();
   } else {
     alert("please Log in first!");
