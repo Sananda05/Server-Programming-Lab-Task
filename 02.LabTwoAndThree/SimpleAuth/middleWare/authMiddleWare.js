@@ -6,7 +6,7 @@ const app = express();
 app.use(cookieParser);
 
 var LocalStorage = require("node-localstorage").LocalStorage,
-  localStorage = new LocalStorage("./scratch");
+localStorage = new LocalStorage("./scratch");
 
 const isLoggedIn = (req, res, next) => {
   const current_user = localStorage.getItem("user");

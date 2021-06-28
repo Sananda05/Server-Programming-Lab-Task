@@ -11,7 +11,7 @@ const errorController = require("../Controller/errorController");
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 
-router.use("/home", isLoggedIn);
+//router.use("/home", isLoggedIn);
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
 

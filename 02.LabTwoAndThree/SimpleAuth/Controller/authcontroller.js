@@ -14,7 +14,7 @@ const getRegister = (req, res) => {
 };
 
 const postRegister = async (req, res) => {
-  const { username, email, gender, password, Confirm_password } = req.body;
+  const { username, email, password, Confirm_password } = req.body;
 
   if (!username || typeof username !== "string") {
     alert("Inavlid Username");
@@ -33,7 +33,6 @@ const postRegister = async (req, res) => {
         const newUser = await User.create({
           username,
           email,
-          gender,
           pass,
         });
         console.log("User created successfully", newUser);
@@ -73,8 +72,9 @@ const postLogin = async (req, res) => {
         JWT_SECRET
       );
       localStorage.setItem("user", user.username);
+      localStorage.setItem("token",token);
       res.cookie("user", user.username);
-      alert("Login Successful !");
+      //alert("Login Successful !");
       res.redirect("/home");
     } else {
       alert("Wrong Password");

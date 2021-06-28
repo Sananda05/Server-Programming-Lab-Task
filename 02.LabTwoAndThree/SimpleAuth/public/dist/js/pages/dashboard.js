@@ -7,6 +7,25 @@
 
 /* global moment:false, Chart:false, Sparkline:false */
 
+
+var cookies = document.cookie
+              .split(';')
+              .map(cookie => cookie.split('='))
+              .reduce((accumulator, [key, value]) =>
+                ({...accumulator, [key.trim()]: decodeURIComponent(value)}),
+                {})
+
+const dashboardText = document.getElementById('textProfile')
+
+if(cookies.user){
+  dashboardText.textContent = cookies.user
+  dashboardText.style.color = "white"
+}
+console.log(cookies.user)
+
+
+
+
 $(function () {
   'use strict'
 
