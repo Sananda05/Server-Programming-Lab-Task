@@ -10,8 +10,9 @@ const getLanding = (req, res) => {
 const getHome =  (req, res) => {
     
     const current_user = localStorage.getItem("user");
-    res.sendfile("index.html", { root: "./views" })
-    alert(`Welcome  ${current_user} !`);
+    res.render("index.ejs",{user:current_user})
+  
+    //alert(`Welcome  ${current_user} !`);
 
 };
 
