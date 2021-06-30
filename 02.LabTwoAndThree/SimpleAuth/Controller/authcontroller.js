@@ -72,7 +72,7 @@ const postLogin = async (req, res) => {
         JWT_SECRET
       );
       localStorage.setItem("user", user.username);
-      localStorage.setItem("token",token);
+      //localStorage.setItem("token",token);
       res.cookie("user", user.username);
       //alert("Login Successful !");
       res.redirect("/home");
