@@ -76,7 +76,7 @@ const getList = async (req,res) =>{
     let allParticipants =[];
     Matholympiad.find().then((data)=>{
         allParticipants=data;
-        console.log(allParticipants);
+        
         res.render("eventView/Matholympiad/mathOlympiadList.ejs",{
             user:current_user,
             participants:allParticipants,
@@ -84,7 +84,7 @@ const getList = async (req,res) =>{
     }).catch((error)=>{
         alert("Failed");
         console.log(error),
-        console.log(allParticipants.length());
+        
         res.render("eventView/Matholympiad/mathOlympiadList.ejs",{
             user:current_user,
             participants:allParticipants,
@@ -95,8 +95,17 @@ const getList = async (req,res) =>{
 
 const getDelete = (req,res) =>{
     const id  = req.params.id;
+    MathOlympiad.deleteOne({_id:id},(err)=>{
+        if(err){
+            alert("Failed to delete");
+            res.redirect("/mo/list");
+        }else{
+            alert("Data has been Deleted");
+            res.redirect("/mo/list");
+        }
+    })
     console.log(id);
-    res.render("eventView/Matholympiad/mathOlympiadList.ejs");
+   
 }
 
 const getEdit = (req,res) => {

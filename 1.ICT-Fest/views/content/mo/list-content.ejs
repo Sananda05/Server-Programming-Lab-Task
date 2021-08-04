@@ -63,9 +63,9 @@
                         <td><%=participant.selected%></th>
                         <td>
                           <% if(participant.paid==participant.total){%>
-                          <p>Successful</p>
+                          <p style="color: green;">Successful</p>
                           <%}else{%> 
-                          <p>Pending</p>
+                          <p style="color: brown;">Pending</p>
                           <%}%>
                           
                         </td>
@@ -73,8 +73,8 @@
                         <td>Payment done</td>
                         <td>Edit</td>
                         <td>
-                          <% const delUrl = "/mo/delete"+participant._id%>
-                          <a href="<%=delUrl%>"><i class="fas fa-trash"></i>Delete
+                          <% const delUrl = "/mo/delete/"+participant._id%>
+                          <a href="<%=delUrl%>"><i style="color: brown;" class="fas fa-trash"></i>
                             <span class="fa fa-chevron"></span>
                           </a>
                         </td>
