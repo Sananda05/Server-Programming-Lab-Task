@@ -108,9 +108,47 @@ const getDelete = (req,res) =>{
    
 }
 
+const getPayment =(req,res) =>{
+    const id  = req.params.id;
+
+    MathOlympiad.findOne({_id:id})
+    .then((participant)=>{
+        participant.paid = participant.total;
+        participant
+        .save()
+        .then(()=>{
+            alert("payment has been updated");
+            res.redirect("/mo/list");
+        }).catch(()=>{
+            alert("Failed to update payment");
+            res.redirect("/mo/list");
+        })
+        })
+}
+
+const getSelected =(req,res) =>{
+    const id  = req.params.id;
+
+    MathOlympiad.findOne({_id:id})
+    .then((participant)=>{
+        participant.selected = true;
+        participant
+        .save()
+        .then(()=>{
+            alert("Participant has been selected");
+            res.redirect("/mo/list");
+        }).catch(()=>{
+            alert("Something went wrong");
+            res.redirect("/mo/list");
+        })
+        })
+    
+}
+    
+
 const getEdit = (req,res) => {
     const id  = req.params.id;
     console.log(id);
     res.render("eventView/Matholympiad/mathOlympiadList.ejs");
 }
-module.exports ={getMoRegister,postMoRegister,getList,getDelete,getEdit};  
+module.exports ={getMoRegister,postMoRegister,getList,getDelete,getEdit,getPayment,getSelected};  
