@@ -146,9 +146,51 @@ const getSelected =(req,res) =>{
 }
     
 
-const getEdit = (req,res) => {
+const postEdit = async (req,res) => {
     const id  = req.params.id;
     console.log(id);
-    res.render("eventView/Matholympiad/mathOlympiadList.ejs");
-}
-module.exports ={getMoRegister,postMoRegister,getList,getDelete,getEdit,getPayment,getSelected};  
+
+    const {name,category,contact,email,institution,tshirt}=req.body;
+    console.log(name);
+    console.log(category);
+    console.log(contact);
+    console.log(email);
+    console.log(institution);
+    console.log(tshirt);
+
+    let regFee =0;
+
+    if(category == "School"){
+        regFee = 250;
+    }
+    else if (category == "College")
+    {
+        regFee = 400;
+    }
+    else{
+        regFee = 500;
+    }
+    const total = regFee;
+    MathOlympiad.findOne({_id:id})
+    .then((participant)=>{
+        participant.name=name;
+        participant.category=category;
+        participant.contact=contact;
+        participant.email=email;
+        participant.institution=institution;
+        participant.tshirt=tshirt;
+        participant.total=total;
+        console.log(participant.name);
+        participant
+        .save()
+        .then(()=>{
+            alert("Participant information has been Updated");
+            res.redirect("/mo/list");
+        }).catch((error)=>{
+            alert("Something went wrong");
+            res.redirect("/mo/list");
+            console.log(error);
+        })
+        })
+    };
+module.exports ={getMoRegister,postMoRegister,getList,getDelete,postEdit,getPayment,getSelected};  
