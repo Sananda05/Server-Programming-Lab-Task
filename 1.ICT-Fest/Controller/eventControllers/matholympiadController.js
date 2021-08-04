@@ -71,17 +71,20 @@ const postMoRegister = async(req,res) =>{
         }
     };
 
-const getList = (req,res) =>{
+const getList = async (req,res) =>{
 
     let allParticipants =[];
     Matholympiad.find().then((data)=>{
         allParticipants=data;
+        console.log(allParticipants);
         res.render("eventView/Matholympiad/mathOlympiadList.ejs",{
             user:current_user,
             participants:allParticipants,
         });
-    }).catch(()=>{
+    }).catch((error)=>{
         alert("Failed");
+        console.log(error),
+        console.log(allParticipants.length());
         res.render("eventView/Matholympiad/mathOlympiadList.ejs",{
             user:current_user,
             participants:allParticipants,

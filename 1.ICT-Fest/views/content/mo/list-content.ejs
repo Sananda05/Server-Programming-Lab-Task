@@ -31,6 +31,7 @@
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Full Name</th>
                   <th>Category</th>
                   <th>Contact</th>
@@ -48,43 +49,38 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5</td>
-                  <td>C</td>
-                </tr>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 5.5
-                  </td>
-                  <td>Win 95+</td>
-                  <td>5.5</td>
-                  <td>A</td>
-                </tr>
-              </tbody>
-              <tfoot>
-              <tr>
-                <th>Rendering engine</th>
-                <th>Browser</th>
-                <th>Platform(s)</th>
-                <th>Engine version</th>
-                <th>CSS grade</th>
-              </tr>
-              </tfoot>
+                  <%if(participants.length>0){participants.forEach(participant =>{%>
+                      <tr>
+                        <td><%=participant._id%></td>
+                        <td><%=participant.name%></td>
+                        <td><%=participant.category%></td>
+                        <td><%=participant.contact%></td>
+                        <td><%=participant.email%></td>
+                        <td><%=participant.institution%></td>
+                        <td><%=participant.tshirt%></td>
+                        <td><%=participant.total%></td>
+                        <td><%=participant.paid%></td>
+                        <td><%=participant.selected%></th>
+                        <td>
+                          <% if(participant.paid==participant.total){%>
+                          <p>Successful</p>
+                          <%}else{%> 
+                          <p>Pending</p>
+                          <%}%>
+                          
+                        </td>
+                        <td>Select</td>
+                        <td>Payment done</td>
+                        <td>Edit</td>
+                        <td>
+                          <% const delUrl = "/mo/delete"+participant._id%>
+                          <a href="<%=delUrl%>"><i class="fas fa-trash"></i>Delete
+                            <span class="fa fa-chevron"></span>
+                          </a>
+                        </td>
+                      </tr>
+
+                    <%})}%>
               </table>
             </div>
             <!-- /.card-body -->

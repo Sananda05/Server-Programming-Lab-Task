@@ -13,8 +13,8 @@ router.post('/mo/register',isLoggedIn,addUserInfo, postMoRegister);
 
 router.get('/mo/list',isLoggedIn,addUserInfo, getList);
 
-router.get('/delete/:id', isLoggedIn,addUserInfo,  getDelete);
+router.get('/mo/delete/:id', isLoggedIn,addUserInfo,  getDelete);
 
-router.get('/edit/:id',isLoggedIn, addUserInfo, getEdit);
+router.get('/mo/edit/:id',isLoggedIn, addUserInfo, getEdit);
 
 module.exports = router;
