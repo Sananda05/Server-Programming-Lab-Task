@@ -93,12 +93,54 @@ const getList = async (req,res) =>{
 };
 
 const getDelete = (req,res) =>{
+    const id  = req.params.id;
+    ProgrammingContest.deleteOne({_id:id},(err)=>{
+        if(err){
+            alert("Failed to delete");
+            res.redirect("/pc/list");
+        }else{
+            alert("Data has been Deleted");
+            res.redirect("/pc/list");
+        }
+    })
+    console.log(id);
 };
 
 const getPayment =(req,res) =>{
+    const id  = req.params.id;
+
+    ProgrammingContest.findOne({_id:id})
+    .then((participant)=>{
+        participant.paid = participant.total;
+        participant
+        .save()
+        .then(()=>{
+            alert("payment has been updated");
+            res.redirect("/pc/list");
+        }).catch(()=>{
+            alert("Failed to update payment");
+            res.redirect("/pc/list");
+        })
+        })
 };
 
 const getSelected =(req,res) =>{
+    const id  = req.params.id;
+
+    ProgrammingContest.findOne({_id:id})
+    .then((participant)=>{
+        participant.selected = true;
+        participant
+        .save()
+        .then(()=>{
+            alert("Participant has been selected");
+            res.redirect("/pc/list");
+        }).catch(()=>{
+            alert("Something went wrong");
+            res.redirect("/pc/list");
+        })
+        })
+    
 };
 
 const postEdit = async (req,res) => {

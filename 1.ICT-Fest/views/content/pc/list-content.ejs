@@ -61,23 +61,39 @@
                         <td><%=participant.total%></td>
                         <td><%=participant.paid%></td>
                         <td>
-                          
+                          <% if(participant.selected==true){%>
+                            <p style="color: rgb(6, 109, 41); font-weight:bold">Yes</p>
+                            <%}else{%> 
+                            <p style="color: brown;">No</p>
+                            <%}%>
                         </td>
                         <td>
-                          
-                          
+                          <% if(participant.paid==participant.total){%>
+                            <p style="color: rgb(7, 87, 7);font-weight:bold">Successful</p>
+                            <%}else{%> 
+                            <p style="color: brown;">Pending</p>
+                            <%}%>                      
                         </td>
                         <td>
-
+                          <% const selectUrl = "/pc/selected/"+participant._id%>
+                          <a href="<%=selectUrl%>"><i style="color: rgb(12, 131, 12);" class="fas fa-check"></i>
+                          <span class="fa fa-chevron"></span>
+                          </a>
                         </td>
                         <td>
-                          
+                          <% const paymentUrl = "/pc/paymentdone/"+participant._id%>
+                          <a href="<%=paymentUrl%>"><i class="far fa-money-bill-alt"></i>
+                          <span class="fa fa-chevron"></span>
+                        </a>
                         </td>
                         <td>    
                           
                         </td>
                         <td>
-                          
+                          <% const delUrl = "/pc/delete/"+participant._id%>
+                          <a href="<%=delUrl%>"><i style="color: brown;" class="fas fa-trash"></i>
+                            <span class="fa fa-chevron"></span>
+                          </a>
                         </td>
                       </tr>
 
