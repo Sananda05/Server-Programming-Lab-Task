@@ -9,7 +9,7 @@ const ProgrammingContest = require("../../model/eventsModel/programmingModel");
 const current_user = localStorage.getItem("user");
 
 const getPcRegister = (req, res) => {
-    res.render("eventView/Matholympiad/mathOlympiadReg.ejs",{user:current_user});
+    res.render("eventView/ProgrammingContest/programmingcontestReg.ejs",{user:current_user});
 };
 
 const postPcRegister = async(req,res) =>{
@@ -39,15 +39,15 @@ const postPcRegister = async(req,res) =>{
     const selected = false;
     const error="";
 
-   const participant = await MathOlympiad.findOne({name:name , contact:contact});
+   const participant = await ProgrammingContest.findOne({name:name , contact:contact});
         if(participant){
             alert("Participant with this name and contact number already exists");
-            res.redirect("/mo/register");
+            res.redirect("/pc/register");
         }
         else{
 
             try{
-                const participant = await MathOlympiad.create({
+                const participant = await ProgrammingContest.create({
                     name,
                     category,
                     contact,
@@ -63,7 +63,7 @@ const postPcRegister = async(req,res) =>{
                 res.redirect("/home");
             }catch(error){
                 alert("Registration Failed :(");
-                res.redirect("/mo/register");
+                res.redirect("/pc/register");
                 console.log(error);
             }
           
@@ -72,6 +72,24 @@ const postPcRegister = async(req,res) =>{
 };
 
 const getList = async (req,res) =>{
+    let allParticipants =[];
+    ProgrammingContest.find().then((data)=>{
+        allParticipants=data;
+        
+        res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
+            user:current_user,
+            participants:allParticipants,
+        });
+    }).catch((error)=>{
+        alert("Failed");
+        console.log(error),
+        
+        res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
+            user:current_user,
+            participants:allParticipants,
+            
+        });
+    });
 };
 
 const getDelete = (req,res) =>{
