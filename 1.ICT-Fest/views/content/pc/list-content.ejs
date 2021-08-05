@@ -1,0 +1,85 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Programming Contest</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Participants List</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div  class="card">
+            <div style="background-color: rgba(78, 198, 214, 0.774);" class="card-header">
+              <h3  class="card-title">Registered Participants</h3>
+            </div>
+            <!-- /.card-header -->
+            
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Category</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Institution</th>
+                  <th>T-shirt</th>
+                  <th>Total</th>
+                  <th>Paid</th>
+                  <th>Selected</th>
+                  <th>Payment status</th>
+                  <th>Select</th>
+                  <th>Payment done</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <%if(participants.length>0){participants.forEach(participant =>{%>
+                      <tr>
+                        
+                        <td>
+                          
+                        </td>
+                        <td>
+                          
+                          
+                        </td>
+                        <td>
+
+                        </td>
+                        <td>
+                          
+                        </td>
+                        <td>    
+                          
+                        </td>
+                        <td>
+                          
+                        </td>
+                      </tr>
+
+                    <%})}%>
+              </table>
+              
+            <!-- /.card-body -->
+      </div>
+    </div>
+  </div>
+ </div> 
+ </section>
+</div>
