@@ -147,16 +147,17 @@ const getSelected =(req,res) =>{
     
 
 const postEdit = async (req,res) => {
-    const id  = req.params.id;
-    console.log(id);
+   
 
-    const {name,category,contact,email,institution,tshirt}=req.body;
+    const {id,name,category,contact,email,institution,tshirt}=req.body;
     console.log(name);
     console.log(category);
     console.log(contact);
     console.log(email);
     console.log(institution);
     console.log(tshirt);
+
+    console.log(id);
 
     let regFee =0;
 

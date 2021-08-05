@@ -15,7 +15,7 @@ router.get('/mo/list',isLoggedIn,addUserInfo, getList);
 
 router.get('/mo/delete/:id', isLoggedIn,addUserInfo,  getDelete);
 
-router.post('/mo/edit/:id',isLoggedIn, addUserInfo, postEdit);
+router.post('/mo/edit',isLoggedIn, addUserInfo, postEdit);
 
 router.get('/mo/paymentdone/:id',isLoggedIn, addUserInfo, getPayment);
 
