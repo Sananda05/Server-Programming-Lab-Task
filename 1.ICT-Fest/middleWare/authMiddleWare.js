@@ -11,7 +11,6 @@ localStorage = new LocalStorage("./scratch");
 const isLoggedIn = (req, res, next) => {
   const current_user = localStorage.getItem("user");
   
-
   if (current_user) {
     res.clearCookie("user");
     res.cookie("user", current_user);
@@ -23,11 +22,5 @@ const isLoggedIn = (req, res, next) => {
   }
 };
 
-const addUserInfo = (req, res, next) =>{
-  //const current_user = localStorage.getItem("user");
-  res.locals.req = req;
-  res.locals.res = res;
-  next();
-}
 
-module.exports ={isLoggedIn,addUserInfo};
+module.exports ={isLoggedIn};

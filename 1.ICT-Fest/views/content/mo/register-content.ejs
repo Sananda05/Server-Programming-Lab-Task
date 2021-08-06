@@ -34,6 +34,13 @@
               </button>
             </div>
           </div>
+          
+          <% let success= 'Participant has been registered successfully!!'%>
+          <% if (error.length>0) {if (error==success){%>
+            <div class="alert alert-success"><%=error%></div>
+            <%}else{%>
+            <div class="alert alert-danger"><%=error%></div> 
+            <%}%> <%}%>
           <!-- /.card-header -->
           <form method="POST" action="/mo/register">
             <div class="card-body">
@@ -83,6 +90,7 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
           </form>
+          
         </div>
       </div>
     </section>

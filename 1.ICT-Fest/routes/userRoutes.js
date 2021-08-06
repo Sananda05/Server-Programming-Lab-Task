@@ -3,7 +3,7 @@ const router = express.Router();
 
 const bodyParser = require("body-parser");
 
-const {isLoggedIn,addUserInfo }= require("../middleWare/authMiddleWare");
+const {isLoggedIn }= require("../middleWare/authMiddleWare");
 const { getRegister, postRegister, getLogin, postLogin,logOut} = require("../Controller/authcontroller");
 const {getHome , getLanding} = require("../Controller/generalController");
 const errorController = require("../Controller/errorController");
@@ -20,7 +20,7 @@ router.route("/register").get(getRegister).post(postRegister);
 
 router.route("/login").get(getLogin).post(postLogin);
 
-router.get("/home", isLoggedIn,addUserInfo, getHome);
+router.get("/home", isLoggedIn, getHome);
 
 router.post('/home',logOut);
 

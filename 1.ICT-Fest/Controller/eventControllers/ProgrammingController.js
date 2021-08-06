@@ -9,7 +9,8 @@ const ProgrammingContest = require("../../model/eventsModel/programmingModel");
 const current_user = localStorage.getItem("user");
 
 const getPcRegister = (req, res) => {
-    res.render("eventView/ProgrammingContest/programmingcontestReg.ejs",{user:current_user});
+    
+    res.render("eventView/ProgrammingContest/programmingcontestReg.ejs",{error:req.flash('error'),user:current_user});
 };
 
 const postPcRegister = async(req,res) =>{
@@ -22,6 +23,7 @@ const postPcRegister = async(req,res) =>{
     console.log(tshirt);
 
     let regFee =0;
+    
 
     if(category == "School"){
         regFee = 250;
@@ -37,11 +39,15 @@ const postPcRegister = async(req,res) =>{
     const total = regFee;
     const paid = 0.0;
     const selected = false;
-    const error="";
+    let error="";
 
    const participant = await ProgrammingContest.findOne({name:name , contact:contact});
         if(participant){
             alert("Participant with this name and contact number already exists");
+
+            error="Participant with same name and contact exists"
+             
+            req.flash('error',error)
             res.redirect("/pc/register");
         }
         else{
@@ -58,11 +64,16 @@ const postPcRegister = async(req,res) =>{
                     selected,
                     tshirt,
                 });
-                alert("Successfully Registered!");
-                
-                res.redirect("/home");
+                error='Participant has been registered successfully!!'
+                req.flash('error',error)
+
+                res.redirect("/pc/register");
             }catch(error){
                 alert("Registration Failed :(");
+
+                error='Unexpected error'
+                req.flash('error',error)
+
                 res.redirect("/pc/register");
                 console.log(error);
             }
@@ -72,11 +83,14 @@ const postPcRegister = async(req,res) =>{
 };
 
 const getList = async (req,res) =>{
+    
     let allParticipants =[];
+    let error ="";
     ProgrammingContest.find().then((data)=>{
         allParticipants=data;
         
         res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
+            error:req.flash('error'),
             user:current_user,
             participants:allParticipants,
         });
@@ -85,6 +99,7 @@ const getList = async (req,res) =>{
         console.log(error),
         
         res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
+            error:req.flash('error'),
             user:current_user,
             participants:allParticipants,
             
@@ -96,10 +111,15 @@ const getDelete = (req,res) =>{
     const id  = req.params.id;
     ProgrammingContest.deleteOne({_id:id},(err)=>{
         if(err){
-            alert("Failed to delete");
+
+            error='Failed to delete data!'
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         }else{
-            alert("Data has been Deleted");
+            error='Data has been deleted successfully!'
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         }
     })
@@ -115,10 +135,14 @@ const getPayment =(req,res) =>{
         participant
         .save()
         .then(()=>{
-            alert("payment has been updated");
+            error="Payment completed succesfully"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         }).catch(()=>{
-            alert("Failed to update payment");
+           error="Data could not be updated"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         })
         })
@@ -133,10 +157,14 @@ const getSelected =(req,res) =>{
         participant
         .save()
         .then(()=>{
-            alert("Participant has been selected");
+             error="Participant has been selcted succesfully"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         }).catch(()=>{
-            alert("Something went wrong");
+            error="Something went wrong"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         })
         })
@@ -180,10 +208,14 @@ const postEdit = async (req,res) => {
         participant
         .save()
         .then(()=>{
-            alert("Participant information has been Updated");
+           error="Participant's information has been updated successfully!!"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
         }).catch((error)=>{
-            alert("Something went wrong");
+            error="Something went wrong"
+            req.flash('error',error)
+
             res.redirect("/pc/list");
             console.log(error);
         })

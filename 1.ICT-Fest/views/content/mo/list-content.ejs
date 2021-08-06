@@ -25,6 +25,17 @@
             <div style="background-color: rgba(78, 198, 214, 0.774);" class="card-header">
               <h3  class="card-title">Registered Participants</h3>
             </div>
+
+            <br/>
+            <% let success= 'Data has been deleted successfully!'%>
+            <% let success2= 'Payment completed succesfully'%>
+            <% let success3= 'Participant has been selcted succesfully'%>
+            
+              <% if (error.length>0) {if (error==success||success2||success3){%>
+                <div class="alert alert-success"><%=error%></div>
+                <%}else{%>
+                <div class="alert alert-danger"><%=error%></div> 
+                <%}%> <%}%>
             <!-- /.card-header -->
             
             <div class="card-body">
