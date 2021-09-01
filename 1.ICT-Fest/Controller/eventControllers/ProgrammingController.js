@@ -3,7 +3,7 @@ localStorage = new LocalStorage("./scratch");
 
 const alert = require("alert");
 
-const ProgrammingContest = require("../../model/eventsModel/programmingModel");
+const programmingContest = require("../../model/eventsModel/programmingModel");
 
 
 const current_user = localStorage.getItem("user");
@@ -14,38 +14,20 @@ const getPcRegister = (req, res) => {
 };
 
 const postPcRegister = async(req,res) =>{
-    const {name,category,contact,email,institution,tshirt}=req.body;
-    console.log(name);
-    console.log(category);
-    console.log(contact);
-    console.log(email);
-    console.log(institution);
-    console.log(tshirt);
+    const{teamname,institution,coachname,coachcontact,coachemail,coachtshirt,leadername,leadercontact,leaderemail,leadertshirt,member1name,member1contact,member1email,member1tshirt,member2name,member2contact,member2email,member2tshirt}=req.body;
 
-    let regFee =0;
+    let regFee =500;
     
-
-    if(category == "School"){
-        regFee = 250;
-    }
-    else if (category == "College")
-    {
-        regFee = 400;
-    }
-    else{
-        regFee = 500;
-    }
-
     const total = regFee;
-    const paid = 0.0;
+    const paid = 0;
     const selected = false;
     let error="";
 
-   const participant = await ProgrammingContest.findOne({name:name , contact:contact});
-        if(participant){
-            alert("Participant with this name and contact number already exists");
+   const team = await programmingContest.findOne({teamname:teamname,coachname:coachname});
+        if(team){
+            
 
-            error="Participant with same name and contact exists"
+            error="Team with this name and Coach name already exists"
              
             req.flash('error',error)
             res.redirect("/pc/register");
@@ -53,26 +35,34 @@ const postPcRegister = async(req,res) =>{
         else{
 
             try{
-                const participant = await ProgrammingContest.create({
-                    name,
-                    category,
-                    contact,
-                    email,
-                    institution,
-                    total,
-                    paid,
-                    selected,
-                    tshirt,
+                const team = await programmingContest.create({
+                teamname,
+                institution,
+                coachname,
+                coachcontact,
+                coachemail,
+                coachtshirt,
+                leadername,
+                leadercontact,
+                leaderemail,
+                leadertshirt,
+                member1name,
+                member1contact,
+                member1email,
+                member1tshirt,
+                member2name,
+                member2contact,
+                member2email,
+                member2tshirt,
+                paid,
+                total,
+                selected,
                 });
-                error='Participant has been registered successfully!!'
+                error='Team has been registered successfully!!'
                 req.flash('error',error)
 
                 res.redirect("/pc/register");
             }catch(error){
-                alert("Registration Failed :(");
-
-                error='Unexpected error'
-                req.flash('error',error)
 
                 res.redirect("/pc/register");
                 console.log(error);
@@ -84,15 +74,15 @@ const postPcRegister = async(req,res) =>{
 
 const getList = async (req,res) =>{
     
-    let allParticipants =[];
+    let allTeams =[];
     let error ="";
-    ProgrammingContest.find().then((data)=>{
-        allParticipants=data;
+    programmingContest.find().then((data)=>{
+        allTeams=data;
         
         res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
             error:req.flash('error'),
             user:current_user,
-            participants:allParticipants,
+            teams:allTeams,
         });
     }).catch((error)=>{
         alert("Failed");
@@ -101,7 +91,7 @@ const getList = async (req,res) =>{
         res.render("eventView/ProgrammingContest/programmingContestList.ejs",{
             error:req.flash('error'),
             user:current_user,
-            participants:allParticipants,
+            teams:allTeams,
             
         });
     });
@@ -109,7 +99,7 @@ const getList = async (req,res) =>{
 
 const getDelete = (req,res) =>{
     const id  = req.params.id;
-    ProgrammingContest.deleteOne({_id:id},(err)=>{
+    programmingContest.deleteOne({_id:id},(err)=>{
         if(err){
 
             error='Failed to delete data!'
@@ -129,10 +119,10 @@ const getDelete = (req,res) =>{
 const getPayment =(req,res) =>{
     const id  = req.params.id;
 
-    ProgrammingContest.findOne({_id:id})
-    .then((participant)=>{
-        participant.paid = participant.total;
-        participant
+    programmingContest.findOne({_id:id})
+    .then((team)=>{
+        team.paid = team.total;
+        team
         .save()
         .then(()=>{
             error="Payment completed succesfully"
@@ -151,13 +141,13 @@ const getPayment =(req,res) =>{
 const getSelected =(req,res) =>{
     const id  = req.params.id;
 
-    ProgrammingContest.findOne({_id:id})
-    .then((participant)=>{
-        participant.selected = true;
-        participant
+    programmingContest.findOne({_id:id})
+    .then((team)=>{
+        team.selected = true;
+        team
         .save()
         .then(()=>{
-             error="Participant has been selcted succesfully"
+            error="Team has been selected succesfully"
             req.flash('error',error)
 
             res.redirect("/pc/list");
@@ -172,54 +162,33 @@ const getSelected =(req,res) =>{
 };
 
 const postEdit = async (req,res) => {
-    const {id,name,category,contact,email,institution,tshirt}=req.body;
-    console.log(name);
-    console.log(category);
-    console.log(contact);
-    console.log(email);
-    console.log(institution);
-    console.log(tshirt);
-
-    console.log(id);
-
-    let regFee =0;
-
-    if(category == "School"){
-        regFee = 250;
-    }
-    else if (category == "College")
-    {
-        regFee = 400;
-    }
-    else{
-        regFee = 500;
-    }
-    const total = regFee;
-    ProgrammingContest.findOne({_id:id})
+    
+    const{id,teamname,institution,coachname,coachcontact,coachemail,coachtshirt,leadername,leadercontact,leaderemail,leadertshirt,member1name,member1contact,member1email,member1tshirt,member2name,member2contact,member2email,member2tshirt}=req.body;
+    console.log(req.body);
+    
+    programmingContest.findOne({ teamname: teamname, coachname: coachname })
     .then((participant)=>{
-        participant.name=name;
-        participant.category=category;
-        participant.contact=contact;
-        participant.email=email;
-        participant.institution=institution;
-        participant.tshirt=tshirt;
-        participant.total=total;
-        console.log(participant.name);
-        participant
-        .save()
-        .then(()=>{
-           error="Participant's information has been updated successfully!!"
-            req.flash('error',error)
-
+        if (participant && participant._id!=id) {
+            error = "Team with this name and contact already exists!";
+            req.flash("error", error);
             res.redirect("/pc/list");
-        }).catch((error)=>{
-            error="Something went wrong"
-            req.flash('error',error)
-
-            res.redirect("/pc/list");
-            console.log(error);
+        }else {
+            programmingContest.findOneAndUpdate(
+              { _id: id }, 
+              {teamname,institution,coachname,coachcontact,coachemail,coachtshirt,leadername,leadercontact,leaderemail,leadertshirt,member1name,member1contact,member1email,member1tshirt,member2name,member2contact,member2email,member2tshirt})
+              .then((data) => {
+                error = "Team Information updated successfully!";
+                    req.flash("error", error);
+                    res.redirect("/pc/list");
+              })
+              .catch((e) => {
+                console.log(e);
+                error = "Failed to update team details";
+                res.redirect("/pc/list");
+              });
+          }
+        
         })
-        })
-};
+    };
 
 module.exports ={getPcRegister,postPcRegister,getList,getDelete,postEdit,getPayment,getSelected};  

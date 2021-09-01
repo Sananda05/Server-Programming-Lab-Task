@@ -176,14 +176,7 @@ const postEdit = async (req,res) => {
    
 
     const {id,name,category,contact,email,institution,tshirt}=req.body;
-    console.log(name);
-    console.log(category);
-    console.log(contact);
-    console.log(email);
-    console.log(institution);
-    console.log(tshirt);
-
-    console.log(id);
+    console.log(req.body);
 
     let regFee =0;
 
@@ -198,30 +191,29 @@ const postEdit = async (req,res) => {
         regFee = 500;
     }
     const total = regFee;
-    MathOlympiad.findOne({_id:id})
+    MathOlympiad.findOne({ name: name, contact: contact })
     .then((participant)=>{
-        participant.name=name;
-        participant.category=category;
-        participant.contact=contact;
-        participant.email=email;
-        participant.institution=institution;
-        participant.tshirt=tshirt;
-        participant.total=total;
-        console.log(participant.name);
-        participant
-        .save()
-        .then(()=>{
-            error="Participant's information has been updated successfully!!"
-            req.flash('error',error)
-
+        if (participant && participant._id!=id) {
+            error = "Participant with this name and contact already exists!";
+            req.flash("error", error);
             res.redirect("/mo/list");
-        }).catch((error)=>{
-            error="Something went wrong"
-            req.flash('error',error)
-
-            res.redirect("/mo/list");
-            console.log(error);
-        })
+        }
+        else {
+            MathOlympiad.findOneAndUpdate(
+              { _id: id }, 
+              { name, contact, category, email,total, institution, tshirt })
+              .then((data) => {
+                error = "Participant updated successfully!";
+                    req.flash("error", error);
+                    res.redirect("/mo/list");
+              })
+              .catch((e) => {
+                console.log(e);
+                error = "Failed to update participant details";
+                res.redirect("/mo/list");
+              });
+          }
+        
         })
     };
 module.exports ={getMoRegister,postMoRegister,getList,getDelete,postEdit,getPayment,getSelected};  

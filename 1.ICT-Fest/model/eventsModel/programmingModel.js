@@ -1,19 +1,95 @@
-const mongoose = require('mongoose');
+const mongoose=require('mongoose')
 
-const MoSchema = new mongoose.Schema(
-    {
-        name :{type : String, required : true },
-        category :{type : String, required : true },
-        contact :{type : String, required : true },
-        email : {type : String, required : false},
-        institution :{type : String, required : true },
-        total :{type : Number, required : true },
-        paid :{type : Number, required : true },
-        selected :{type : Boolean, required : true },
-        tshirt :{type : String, required : true },
-        date :{type:Date, default:Date.now},
-        
-    });
+const PCSchema=new mongoose.Schema({
+    teamname:{
+        type:String,
+        required:true
+    },
+    institution:{
+        type:String,
+        required:true
+    },
+    coachname:{
+        type:String,
+        required:true
+    },
+    coachcontact:{
+        type:String,
+        required:true
+    },
+    coachemail:{
+        type:String,
+        required:false
+    },
+    coachtshirt:{
+        type:String,
+        required:true
+    },
+    leadername:{
+        type:String,
+        required:true
+    },
+    leadercontact:{
+        type:String,
+        required:true
+    },
+    leaderemail:{
+        type:String,
+        required:false
+    },
+    leadertshirt:{
+        type:String,
+        required:true
+    },
+    member1name:{
+        type:String,
+        required:true
+    },
+    member1contact:{
+        type:String,
+        required:true
+    },
+    member1email:{
+        type:String,
+        required:false
+    },
+    member1tshirt:{
+        type:String,
+        required:true
+    },
+    member2name:{
+        type:String,
+        required:true
+    },
+    member2contact:{
+        type:String,
+        required:true
+    },
+    member2email:{
+        type:String,
+        required:false
+    },
+    member2tshirt:{
+        type:String,
+        required:true
+    },
+    total:{
+        type:Number,
+        required:true
+    },
+    paid:{
+        type:Number,
+        required:true
+    },
+    selected:{
+        type:Boolean,
+        required:true
+    },
+    date:{
+        type:Date,
+        default:Date.now,
+    }
+})
 
-const ProgrammingContest = mongoose.model("ProgrammingContest", MoSchema);
-module.exports = ProgrammingContest;
+const pContest=mongoose.model('pContest',PCSchema)
+module.exports=pContest

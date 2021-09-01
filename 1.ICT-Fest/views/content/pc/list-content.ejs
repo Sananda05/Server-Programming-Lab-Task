@@ -23,76 +23,100 @@
         <div class="col-12">
           <div  class="card">
             <div style="background-color: rgba(78, 198, 214, 0.774);" class="card-header">
-              <h3  class="card-title">Registered Participants</h3>
+              <h3  class="card-title">Registered Teams</h3>
             </div>
 
             <br/>
             <% let success= 'Data has been deleted successfully!'%>
             <% let success2= 'Payment completed succesfully'%>
-            <% let success3= 'Participant has been selcted succesfully'%>
+            <% let success3= 'Team information has been updated succesfully'%>
             
               <% if (error.length>0) {if (error==success||success2||success3){%>
                 <div class="alert alert-success"><%=error%></div>
                 <%}else{%>
-                <div class="alert alert-danger"><%=error%></div> 
+                <div style="color: brown;" class="alert alert-danger"><%=error%></div> 
                 <%}%> <%}%>
             <!-- /.card-header -->
             
-            <div class="card-body">
+            <div style="overflow-y: auto;" class="card-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Full Name</th>
-                  <th>Category</th>
-                  <th>Contact</th>
-                  <th>Email</th>
-                  <th>Institution</th>
-                  <th>T-shirt</th>
+                  <th>Team<br/>ID</th>
+                  <th>Team<br/>Name</th>
+                  <th>Institute</th>
+                  <th>Coach <br/>Name</th>
+                  <th>Coach<br/>Contact<br/>No.</th>
+                  <th>Coach<br/>Email</th>
+                  <th>Coach<br/>T-shirt</th>
+                  <th>Leader <br/>Name</th>
+                  <th>Leader<br/>Contact<br/>No.</th>
+                  <th>Leader<br/>Email</th>
+                  <th>Leader<br/>T-shirt</th>
+                  <th>Member1 <br/>Name</th>
+                  <th>Member1<br/>Contact<br/>No.</th>
+                  <th>Member1<br/>Email</th>
+                  <th>Member1<br/>T-shirt</th>
+                  <th>Member2 <br/>Name</th>
+                  <th>Member2<br/>Contact<br/>No.</th>
+                  <th>Member2<br/>Email</th>
+                  <th>Member2<br/>T-shirt</th>
                   <th>Total</th>
                   <th>Paid</th>
                   <th>Selected</th>
-                  <th>Payment status</th>
+                  <th>Payment<br/> Status</th>
                   <th>Select</th>
-                  <th>Payment done</th>
+                  <th>Payment<br/> Done</th>
                   <th>Edit</th>
                   <th>Delete</th>
                 </tr>
                 </thead>
                 <tbody>
-                  <%if(participants.length>0){participants.forEach(participant =>{%>
+                  <%if(teams.length>0){teams.forEach(team =>{%>
                       <tr>
-                        <td><%=participant._id%></td>
-                        <td><%=participant.name%></td>
-                        <td><%=participant.category%></td>
-                        <td><%=participant.contact%></td>
-                        <td><%=participant.email%></td>
-                        <td><%=participant.institution%></td>
-                        <td><%=participant.tshirt%></td>
-                        <td><%=participant.total%></td>
-                        <td><%=participant.paid%></td>
+                        <td ><%=team._id%></td>
+                        <td ><%=team.teamname%></td>
+                        <td ><%=team.institution%></td>
+                        <td ><%=team.coachname%></td>
+                        <td ><%=team.coachcontact%></td>
+                        <td ><%=team.coachemail%></td>
+                        <td ><%=team.coachtshirt%></td>
+                        <td ><%=team.leadername%></td>
+                        <td ><%=team.leadercontact%></td>
+                        <td ><%=team.leaderemail%></td>
+                        <td ><%=team.leadertshirt%></td>
+                        <td ><%=team.member1name%></td>
+                        <td ><%=team.member1contact%></td>
+                        <td ><%=team.member1email%></td>
+                        <td ><%=team.member1tshirt%></td>
+                        <td ><%=team.member2name%></td>
+                        <td ><%=team.member2contact%></td>
+                        <td ><%=team.member2email%></td>
+                        <td ><%=team.member2tshirt%></td>
+                        <td ><%=team.total%></td>
+                        <td ><%=team.paid%></td>
                         <td>
-                          <% if(participant.selected==true){%>
+                          <% if(team.selected==true){%>
                             <p style="color: rgb(6, 109, 41); font-weight:bold">Yes</p>
                             <%}else{%> 
                             <p style="color: brown;">No</p>
                             <%}%>
                         </td>
                         <td>
-                          <% if(participant.paid==participant.total){%>
+                          <% if(team.paid==team.total){%>
                             <p style="color: rgb(7, 87, 7);font-weight:bold">Successful</p>
                             <%}else{%> 
                             <p style="color: brown;">Pending</p>
                             <%}%>                      
                         </td>
                         <td>
-                          <% const selectUrl = "/pc/selected/"+participant._id%>
+                          <% const selectUrl = "/pc/selected/"+team._id%>
                           <a href="<%=selectUrl%>"><i style="color: rgb(12, 131, 12);" class="fas fa-check"></i>
                           <span class="fa fa-chevron"></span>
                           </a>
                         </td>
                         <td>
-                          <% const paymentUrl = "/pc/paymentdone/"+participant._id%>
+                          <% const paymentUrl = "/pc/paymentdone/"+team._id%>
                           <a href="<%=paymentUrl%>"><i class="far fa-money-bill-alt"></i>
                           <span class="fa fa-chevron"></span>
                         </a>
@@ -103,7 +127,7 @@
                             </a>
                         </td>
                         <td>
-                          <% const delUrl = "/pc/delete/"+participant._id%>
+                          <% const delUrl = "/pc/delete/"+team._id%>
                           <a href="<%=delUrl%>"><i style="color: brown;" class="fas fa-trash"></i>
                             <span class="fa fa-chevron"></span>
                           </a>
@@ -123,49 +147,92 @@
                     </div>
                     <div class="modal-body">
                       <form method="POST" action="/pc/edit">
-                        <div class="form-group">
-                          <label>ID</label>
-                          <input type="text" class="form-control" id="mo_id" name="id" placeholder="ID">
-                        </div>
-                        <div class="form-group">
-                          <label>Full name</label>
-                          <input type="text" class="form-control" id="mo_name" name="name" placeholder="Full name">
-                        </div>
-                        <div class="form-group">
-                            <label>Select Category</label>
-                            <select class="form-control" id="mo_cat" name="category" >
-                              <option disabled> ---Choose option---</option>
-                              <option value="University">University</option>
-                              <option value="School">School</option>
-                              <option value="College">College</option>
-                            </select>
-                        </div>
-                  
-                        <div class="form-group">
-                          <label>Contact</label>
-                          <input type="text" class="form-control" id="mo_contact" name="contact" placeholder="Mobile no.">
-                        </div>
-                        <div class="form-group">
-                          <label>Email address</label>
-                          <input type="email" class="form-control" id="mo-email" name="email" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                          <label>Institution</label>
-                          <input type="text" class="form-control" id="mo-institution" name="institution" placeholder="Institution">
-                        </div>
-          
-                        <div class="form-group">
-                          <label>Select T-shirt</label>
-                          <select class="form-control" id="mo_tshirt" name="tshirt">
-                            <option disabled>----Choose option----</option>
-                            <option value="S">S</option>
-                            <option value="L">L</option>
-                            <option value="M">M</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                          </select>
-                        </div>
-                    
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <input type="text" class="form-control has-feedback-left" id="id" name="id" required="required" placeholder="Team ID">
+                                <input type="text" class="form-control has-feedback-left" id="teamname" name="teamname" required="required" placeholder="Team Name">
+
+                              </div>
+                              <!-- /.form-group -->
+                              <div class="form-group">
+                                <label>Coach Information</label>
+                                <input type="text" class="form-control" id="coachname" name="coachname" required="required" placeholder="Name of the Coach">
+                                <input type="text" class="form-control" id="coachcontact" name="coachcontact" required="required" placeholder="Contact No. of the coach">
+                                <input type="text" class="form-control" id="coachemail" name="coachemail" placeholder="Email of the Coach">
+                              </div>
+                              <div class="form-group">
+                                <h6>T-shirt size of the Coach</h6>
+                                <select class="form-control" id="coachtshirt" name="coachtshirt">
+                                  <option disabled>---Choose option---</option>
+                                  <option value="M">Medium</option>
+                                  <option value="L">Large</option>
+                                  <option value="XL">Extra Large</option>
+                                </select>
+                              </div>
+                              <!-- /.form-group -->
+                              
+                              <div class="form-group">
+                                <label>Team Leader Information</label>
+                                <input type="text" class="form-control" id="leadername" name="leadername" required="required" placeholder="Name of the team leader">
+                                <input type="text" class="form-control" id="leadercontact" name="leadercontact" required="required" placeholder="Contact No. of the Team Leader">
+                                <input type="text" class="form-control" id="leaderemail" name="leaderemail" placeholder="Email of the leader">
+                              </div>
+                              <div class="form-group">
+                                <h6>T-shirt size of the leader</h6>
+                                <select class="form-control" id="leadertshirt" name="leadertshirt">
+                                  <option disabled>---Choose option---</option>
+                                  <option value="M">Medium</option>
+                                  <option value="L">Large</option>
+                                  <option value="XL">Extra Large</option>
+                                </select>
+                              </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-6">
+                              <div class="form-group">
+                                <input type="text" class="form-control" id="institution" name="institution" required="required" placeholder="Institution Name">
+                              </div>
+                              <!-- /.form-group -->
+            
+                              <div class="form-group">
+                                <label>Team Member-1 Information</label>
+                                <input type="text" class="form-control" id="member1name" name="member1name" required="required" placeholder="Name of Member-1">
+                                <input type="text" class="form-control" id="member1contact" name="member1contact" required="required" placeholder="Contact No. of Member-1">
+                                <input type="text" class="form-control" id="member1email" name="member1email" placeholder="Email of Member-1 ">
+                              </div>
+                              
+                              <div class="form-group">
+                                <h6>T-shirt size of member-1</h6>
+                                <select class="form-control" id="member1tshirt" name="member1tshirt">
+                                  <option disabled>---Choose option---</option>
+                                  <option value="M">Medium</option>
+                                  <option value="L">Large</option>
+                                  <option value="XL">Extra Large</option>
+                                </select>
+                              </div>
+                              <div class="form-group">
+                                <label>Team Member-2 Information</label>
+                                <input type="text" class="form-control" id="member2name" name="member2name" required="required" placeholder="Name of Member-2">
+                                <input type="text" class="form-control" id="member2contact" name="member2contact" required="required" placeholder="Contact No. of Member-2">
+                                <input type="text" class="form-control" id="member2email" name="member2email" placeholder="Email of Member-2 ">
+                              </div>
+                              <div class="form-group">
+                                <h6>T-shirt size of member-2</h6>
+                                <select class="form-control" id="member2tshirt" name="member2tshirt">
+                                  <option disabled>---Choose option---</option>
+                                  <option value="M">Medium</option>
+                                  <option value="L">Large</option>
+                                  <option value="XL">Extra Large</option>
+                                </select>
+                              </div>
+                            
+                              <!-- /.form-group -->
+                            </div>
+                            <!-- /.col -->
+                          </div>
+            
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                       <button type="submit" class="btn btn-primary"><a style="color: aliceblue;">Update</a></button>
