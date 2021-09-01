@@ -7,6 +7,8 @@ const alert = require("alert");
 const Matholympiad = require("../../model/eventsModel/MatholympiadModel");
 
 const current_user = localStorage.getItem("user");
+const nodemailer = require("nodemailer");
+
 
 
 const getMoRegister = (req, res) => {
@@ -63,23 +65,67 @@ const postMoRegister = async(req,res) =>{
                     selected,
                     tshirt,
                 });
-                alert("Successfully Registered!");
-
+            
                 error='Participant has been registered successfully!!'
                 req.flash('error',error)
+                
+                const sendmail = `
+                <p>Hello ${name},<br> You have been registered in Math Olympiad Event successfully!</p>
+                <h4>Check Your Details </h4>
+                <ul>
+                    <li>Name : ${name}</li>
+                    <li>Category : ${category}</li>
+                    <li>Contact : ${contact}</li>
+                    <li>Email : ${email}</li>
+                    <li>Institution : ${institution}</li>
+                    <li>T-shirt size : ${tshirt}</li>
+                </ul>
+                <p><b>For any kind of problem,please contact in Adminstration.</b></p><br><p><b>Thank You.</b></p>
+                 `;
+
+                let transporter = nodemailer.createTransport({
+                    service:'gmail',
+                    
+                    auth: {
+                        user: process.env.EMAIL,
+                        pass: process.env.PASS, 
+                    },
+
+
+                });
+
+                const mailDetails ={
+
+                    from: 'sanandazohora@gmail.com', // sender address
+                    to: email, // list of receivers
+                    
+                    subject: "Regarding 10th ICT Fest Registration Details", // Subject line
+                    text: "Hello"+{name}+",Thank you for your registration in Math Olympiad event.",
+                    html : sendmail,
+                }  
+            
+                // send mail with defined transport object
+                let info = await transporter.sendMail(mailDetails, function(err,data){
+                    
+                if(err) {
+                    console.log(err);
+                } else {
+                    error="Confirmantion E-mail has been sent."
+                    req.flash('error',error)
+                    console.log('Email sent successfully');
+                }
+                });
 
                 res.redirect("/mo/register");
+
             }catch(error){
-                alert("Registration Failed :(");
-
-                error='Unexpected error'
-                req.flash('error',error)
-
                 res.redirect("/mo/register");
                 console.log(error);
             }
           
         }
+          
+        
     };
 
 const getList = async (req,res) =>{

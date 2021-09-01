@@ -36,7 +36,8 @@
           </div>
 
           <% let success= 'Team has been registered successfully!!'%>
-          <% if (error.length>0) {if (error==success){%>
+          <% let success1='Confirmantion E-mail has been sent.'%>
+          <% if (error.length>0) {if (error==success||success1){%>
             <div class="alert alert-success"><%=error%></div>
             <%}else{%>
             <div style="color: brown;" class="alert alert-danger"><%=error%></div> 
