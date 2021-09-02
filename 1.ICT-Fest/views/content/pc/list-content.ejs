@@ -43,6 +43,7 @@
                 <thead>
                 <tr>
                   <th>Team<br/>ID</th>
+                  <th>Hashed ID</th>
                   <th>Team<br/>Name</th>
                   <th>Institute</th>
                   <th>Coach <br/>Name</th>
@@ -75,6 +76,7 @@
                   <%if(teams.length>0){teams.forEach(team =>{%>
                       <tr>
                         <td ><%=team._id%></td>
+                        <td><%=team.hashedId%></td>
                         <td ><%=team.teamname%></td>
                         <td ><%=team.institution%></td>
                         <td ><%=team.coachname%></td>

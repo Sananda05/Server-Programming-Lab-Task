@@ -38,11 +38,12 @@
                 <%}%> <%}%>
             <!-- /.card-header -->
             
-            <div class="card-body">
+            <div style="overflow-y: auto;" class="card-body">
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>ID</th>
+                  <th>Hashed ID</th>
                   <th>Full Name</th>
                   <th>Category</th>
                   <th>Contact</th>
@@ -63,6 +64,7 @@
                   <%if(participants.length>0){participants.forEach(participant =>{%>
                       <tr>
                         <td><%=participant._id%></td>
+                        <td><%=participant.hashedId%></td>
                         <td><%=participant.name%></td>
                         <td><%=participant.category%></td>
                         <td><%=participant.contact%></td>

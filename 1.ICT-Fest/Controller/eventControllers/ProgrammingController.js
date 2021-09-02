@@ -3,6 +3,7 @@ localStorage = new LocalStorage("./scratch");
 
 const programmingContest = require("../../model/eventsModel/programmingModel");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto");
 
 
 
@@ -22,8 +23,8 @@ const postPcRegister = async(req,res) =>{
     const paid = 0;
     const selected = false;
     let error="";
-
-   const team = await programmingContest.findOne({teamname:teamname,coachname:coachname});
+    let hashedId="pass";
+    const team = await programmingContest.findOne({teamname:teamname,coachname:coachname});
         if(team){
             
 
@@ -57,31 +58,39 @@ const postPcRegister = async(req,res) =>{
                 paid,
                 total,
                 selected,
+                hashedId,
                 });
                 error='Team has been registered successfully!!'
                 req.flash('error',error)
 
-                const sendmail = `
-                <p>Hello Team ${teamname}!<br> Your Team have been registered in Programming Contest Event successfully!</p>
-                <h4>Check Your Teams's Details </h4>
-                <ul>
-                    <li>Team Name : ${teamname}</li>
-                    <li>Institution : ${institution}</li>
-                    <li>Coach Name  : ${coachname}</li>
-                    <li>Coach Email : ${coachemail}</li>
-                    <li>Coach Contact : ${coachcontact}</li>
-                    <li>Coach T-shirt size : ${coachtshirt}</li>
-                    <li>Team Leader : ${leadername}</li>
-                    <li>Leader Contact : ${leadercontact}</li>
-                    <li>Leader Email : ${leaderemail}</li>
-                    <li>Leader T-shirt size : ${leadertshirt}</li>
-                    <li>Team Member1 : ${member1name}</li>
-                    <li>Member1 T-shirt size : ${member1tshirt}</li>
-                    <li>Team Member2 : ${member2name}</li>
-                    <li>Member2 T-shirt size : ${member2tshirt}</li>
-                </ul>
-                <p><b>For any kind of problem,please contact in Administration.</b></p><br><p><b>Thank You.</b></p>
-                 `;
+                // generating unique code for email
+
+                const str =(team._id).toString()
+                
+                const secret = "shhh it's a secret";
+
+                // create a sha-256 hasher
+                const sha256Hasher = crypto.createHmac("sha256", secret);
+
+                const hash = sha256Hasher.update(str).digest("hex");
+
+                console.log(hash);
+
+                tid= team._id
+
+                programmingContest.findOne({_id:tid})
+                .then((participant)=>{
+                    participant.hashedId = hash;
+                    participant
+                    .save()
+                    .then(()=>{
+                        console.log("Done")
+                       
+                    }).catch(()=>{
+                        console.log("Something went wrong")
+                    })
+                    })
+
 
                 let transporter = nodemailer.createTransport({
                     service:'gmail',
@@ -92,27 +101,51 @@ const postPcRegister = async(req,res) =>{
                     },
                 });
 
-                const mailDetails ={
+                let participantInfo=[
+                    {name: coachname, email:coachemail},
+                    {name: leadername, email:leaderemail},
+                    {name: member1name, email:member1email},
+                    {name: member2name, email:member2email},
+                ];
 
-                    from: 'sanandazohora@gmail.com', // sender address
-                    to: leaderemail, // list of receivers
+                participantInfo.forEach((p)=>{
+
+                    const mailDetails ={
+
+                        from: 'sanandazohora@gmail.com', // sender address
+                        to: p.email,// list of receivers
+                        subject: "Regarding 10th ICT Fest Registration.", // Subject line
+                        //text: `Hello ${p.name},Thank you and your team ${teamname} for registering for the 10th ICT Programming Contest.`,
+                        html: `<p>Hello ${p.name},<br>Thank you and your team <b> ${teamname} </b> for registering for the 10th ICT Fest <b>Programming Contest</b><p>
+                               <h5>Check Your Team's ID </h5>
+                               <ul>
+                               <li><b> Team ID </b>: ${hash}</li>
+                               </ul>
+                               <p>For any kind of support do reach out to the following contacts</p>
+                               <ul>
+                               <li> Sananda: +8801776451545 </li>
+                               <li> Fahim Abrar: +8801776451545 </li>
+                               </ul>
+                               <p>Regards</p></br>
+                               <p>ICT Fest 2019</p>
+                               `
+                    }; 
+
+                      // send mail with defined transport object
+                    let info =transporter.sendMail(mailDetails, function(err,data){
                     
-                    subject: "Regarding 10th ICT Fest Registration Details", // Subject line
-                    text: "Hello Team" +{teamname}+ ".Thank you for your registration in Math Olympiad event.",
-                    html : sendmail,
-                }  
-            
-                // send mail with defined transport object
-                let info = await transporter.sendMail(mailDetails, function(err,data){
-                    
-                if(err) {
-                    console.log(err);
-                } else {
-                    error="Confirmantion E-mail has been sent."
-                    req.flash('error',error)
-                    console.log('Email sent successfully');
-                }
+                        if(err) {
+                            console.log(err);
+                        } else {
+                            error="Confirmantion E-mail has been sent."
+                            req.flash('error',error)
+                            console.log('Email sent successfully');
+                        }
+                        });
+
                 });
+
+              
 
                 res.redirect("/pc/register");
             }catch(error){

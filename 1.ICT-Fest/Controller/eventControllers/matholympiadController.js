@@ -8,6 +8,7 @@ const Matholympiad = require("../../model/eventsModel/MatholympiadModel");
 
 const current_user = localStorage.getItem("user");
 const nodemailer = require("nodemailer");
+const crypto = require("crypto")
 
 
 
@@ -40,6 +41,7 @@ const postMoRegister = async(req,res) =>{
     const total = regFee;
     const paid = 0.0;
     const selected = false;
+    const hashedId = "pass";
     let error="";
 
    const participant = await MathOlympiad.findOne({name:name , contact:contact});
@@ -64,23 +66,54 @@ const postMoRegister = async(req,res) =>{
                     paid,
                     selected,
                     tshirt,
+                    hashedId,
                 });
             
                 error='Participant has been registered successfully!!'
                 req.flash('error',error)
+
+                 // generating unique code 
+
+                 const str =(participant._id).toString()
+                
+                 const secret = "shhh it's a secret";
+ 
+                 // create a sha-256 hasher
+                 const sha256Hasher = crypto.createHmac("sha256", secret);
+ 
+                 const hashed = sha256Hasher.update(str).digest("hex");
+ 
+                 console.log(hashed);
+                 pid= participant._id
+
+                MathOlympiad.findOne({_id:pid})
+                .then((participant)=>{
+                    participant.hashedId = hashed;
+                    participant
+                    .save()
+                    .then(()=>{
+                        console.log("Done")
+                        res.redirect("/mo/list");
+                    }).catch(()=>{
+                        console.log("Something went wrong")
+                    })
+                    })
+
                 
                 const sendmail = `
-                <p>Hello ${name},<br> You have been registered in Math Olympiad Event successfully!</p>
-                <h4>Check Your Details </h4>
+                <p>Hello ${name},<br> Thank you for registering for the 10th ICT Fest <b>Math Olympiad</b> Event.
+                </p>
+                <h5>Check Your ID </h5>
                 <ul>
-                    <li>Name : ${name}</li>
-                    <li>Category : ${category}</li>
-                    <li>Contact : ${contact}</li>
-                    <li>Email : ${email}</li>
-                    <li>Institution : ${institution}</li>
-                    <li>T-shirt size : ${tshirt}</li>
+                <li><b>ID </b>: ${hashed}</li>
                 </ul>
-                <p><b>For any kind of problem,please contact in Adminstration.</b></p><br><p><b>Thank You.</b></p>
+                <p>For any kind of support do reach out to the following contacts</p>
+                <ul>
+                <li> Sananda: +8801776451545 </li>
+                <li> Fahim Abrar: +8801776451545 </li>
+                </ul>
+                <p>Regards</p></br>
+                <p>ICT Fest 2019</p>
                  `;
 
                 let transporter = nodemailer.createTransport({
@@ -90,8 +123,6 @@ const postMoRegister = async(req,res) =>{
                         user: process.env.EMAIL,
                         pass: process.env.PASS, 
                     },
-
-
                 });
 
                 const mailDetails ={
@@ -99,7 +130,7 @@ const postMoRegister = async(req,res) =>{
                     from: 'sanandazohora@gmail.com', // sender address
                     to: email, // list of receivers
                     
-                    subject: "Regarding 10th ICT Fest Registration Details", // Subject line
+                    subject: "Regarding 10th ICT Fest Registration.", // Subject line
                     text: "Hello"+{name}+",Thank you for your registration in Math Olympiad event.",
                     html : sendmail,
                 }  

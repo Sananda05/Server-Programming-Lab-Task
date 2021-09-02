@@ -85,6 +85,7 @@ const PCSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
+    hashedId:{type:String,required:false},
     date:{
         type:Date,
         default:Date.now,

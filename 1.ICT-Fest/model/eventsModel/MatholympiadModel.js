@@ -11,6 +11,7 @@ const MoSchema = new mongoose.Schema(
         paid :{type : Number, required : true },
         selected :{type : Boolean, required : true },
         tshirt :{type : String, required : true },
+        hashedId:{type:String,required:false},
         date :{type:Date, default:Date.now},
         
     });
